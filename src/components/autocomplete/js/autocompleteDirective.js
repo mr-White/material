@@ -281,6 +281,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
     template:     function (element, attr) {
       var noItemsTemplate = getNoItemsTemplate(),
           itemTemplate    = getItemTemplate(),
+          footerTemplate  = getFooterTemplate(),
           leftover        = element.html(),
           tabindex        = attr.tabindex;
 
@@ -323,6 +324,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                   md-extra-name="$mdAutocompleteCtrl.itemName">\
                   ' + itemTemplate + '\
                   </li>' + noItemsTemplate + '\
+                  ' + footerTemplate + '\
             </ul>\
           </md-virtual-repeat-container>\
         </md-autocomplete-wrap>';
@@ -332,6 +334,15 @@ function MdAutocomplete ($$mdSvgRegistry) {
             html = templateTag.length ? templateTag.html() : element.html();
         if (!templateTag.length) element.empty();
         return '<md-autocomplete-parent-scope md-autocomplete-replace>' + html + '</md-autocomplete-parent-scope>';
+      }
+
+      function getFooterTemplate() {
+        var templateTag = element.find('md-footer-template').detach(),
+            template = templateTag.length ? templateTag.html() : '';
+        return template
+            ? '<li class="search-results-footer"\
+                         >' + template + '</li>'
+            : '';
       }
 
       function getNoItemsTemplate() {
