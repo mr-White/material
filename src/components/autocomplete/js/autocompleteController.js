@@ -110,10 +110,12 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       return $mdUtil.nextTick(positionDropdown, false, $scope);
     }
 
-    var element = angular.element(document.querySelector('.search-results-footer')); 
-    var footerHeight = element[0].offsetHeight ? element[0].offsetHeight : 0;
+    // Optional footer in the search results of autocomplete to support the requirement of Powered by Google for using their API
+    var element = angular.element(document.querySelector('.search-results-footer'));
+    var footerHeight = element[0] ? ITEM_HEIGHT : 0;
 
-    var dropdownHeight = (($scope.dropdownItems || MAX_ITEMS) * ITEM_HEIGHT) + footerHeight; // 48 pixels height for footer
+    // standard
+    var dropdownHeight = (($scope.dropdownItems || MAX_ITEMS) * ITEM_HEIGHT) + footerHeight; // + footerHeight unique
 
     var hrect  = elements.wrap.getBoundingClientRect(),
         vrect  = elements.snap.getBoundingClientRect(),
@@ -144,13 +146,18 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     if (position === 'top') {
       styles.top       = 'auto';
       styles.bottom    = bot + 'px';
-      styles.maxHeight = Math.min(dropdownHeight, hrect.top - root.top - MENU_PADDING) + 'px';
+      styles.maxHeight = Math.min(dropdownHeight, hrect.top - root.top - MENU_PADDING + footerHeight) + 'px';
     } else {
       var bottomSpace = root.bottom - hrect.bottom - MENU_PADDING + $mdUtil.getViewportTop();
 
       styles.top       = (top - offset) + 'px';
       styles.bottom    = 'auto';
-      styles.maxHeight = Math.min(dropdownHeight, bottomSpace) + 'px';
+      styles.maxHeight = Math.min(dropdownHeight, bottomSpace + footerHeight) + 'px';
+    }
+
+    // if we have a footer, set the height, otherwise the height falls short when set subsquently
+    if (footerHeight > 0) {
+      styles.height = styles.maxHeight;
     }
 
     elements.$.scrollContainer.css(styles);
