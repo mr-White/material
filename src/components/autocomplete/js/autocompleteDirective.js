@@ -285,8 +285,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
           leftover        = element.html(),
           tabindex        = attr.tabindex;
 
-          console.log('running that new shit');
-
       // Set our attribute for the link function above which runs later.
       // We will set an attribute, because otherwise the stored variables will be trashed when
       // removing the element is hidden while retrieving the template. For example when using ngIf.

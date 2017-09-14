@@ -110,7 +110,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       return $mdUtil.nextTick(positionDropdown, false, $scope);
     }
 
-    var dropdownHeight = ($scope.dropdownItems || MAX_ITEMS) * ITEM_HEIGHT;
+    var element = angular.element(document.querySelector('.search-results-footer')); 
+    var footerHeight = element[0].offsetHeight ? element[0].offsetHeight : 0;
+
+    var dropdownHeight = (($scope.dropdownItems || MAX_ITEMS) * ITEM_HEIGHT) + footerHeight; // 48 pixels height for footer
 
     var hrect  = elements.wrap.getBoundingClientRect(),
         vrect  = elements.snap.getBoundingClientRect(),
